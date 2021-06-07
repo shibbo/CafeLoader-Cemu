@@ -229,7 +229,7 @@ class Project:
             print("Linking '%s'" %self.name)
 
         symtable = '../files/game_%s.x' %addrconv.region
-        addrconv.convertToVirtual()
+        addrconv.convertToPhysical()
         addrconv.convertTable('../files/game_physc.x', symtable)
         
         out = self.name + '.o'

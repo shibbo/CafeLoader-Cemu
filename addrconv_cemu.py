@@ -4,7 +4,7 @@ symbols = {}
 diffs = []
 
 # new function -- this takes the game.x given and will convert all of those addresses back to physical - shibbo
-def convertToVirtual():
+def convertToPhysical():
     with open("../files/game.x", "r") as f:
         lines = f.readlines()
 
