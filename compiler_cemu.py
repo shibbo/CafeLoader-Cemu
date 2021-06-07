@@ -5,7 +5,7 @@ import copy, sys, os, shutil, yaml, subprocess, struct
 import elftools.elf.elffile
 import addrconv_cemu as addrconv
 from elf import ELF, round_up
-
+import conv
 
 # Change the following (use / instead of \)
 GHS_PATH = 'C:/ghs/multi5327/'
@@ -228,9 +228,12 @@ class Project:
         else:
             print("Linking '%s'" %self.name)
 
-        symtable = '../files/game_%s.x' %addrconv.region
-        addrconv.convertToPhysical()
-        addrconv.convertTable('../files/game_physc.x', symtable)
+        # automatically convert our map that is virtual to physical
+        conv.convGameMapToVirt()
+        conv.convGameMapToPhys()
+
+        symtable = '../files/syms/game_%s.x' %addrconv.region
+        addrconv.convertTable('../files/syms/game_phys.x', symtable)
         
         out = self.name + '.o'
         symfiles = '-T %s' %symtable

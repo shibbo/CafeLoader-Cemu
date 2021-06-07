@@ -3,42 +3,6 @@ from elf import round_up
 symbols = {}
 diffs = []
 
-# new function -- this takes the game.x given and will convert all of those addresses back to physical - shibbo
-def convertToPhysical():
-    with open("../files/game.x", "r") as f:
-        lines = f.readlines()
-
-    output_file = []
-
-    for line in lines:
-        
-        if " = " not in line:
-            output_file.append(line)
-            continue
-
-        line_split = line.split(" = ")
-
-        # left side is symbol
-        # right side is address
-        sym = line_split[0].strip()
-        addr = line_split[1].strip().replace(";", "")
-
-        if addr == "__deleted_virtual_called":
-            output_file.append(line)
-            continue
-
-        addr_int = int(addr, 0)
-
-        if 0xEBC0000 <= addr_int < 0x10502200:
-            addr_int += 0x00502200
-        else:
-            addr_int += 0xCBC0000
-
-        output_file.append(f"\t{sym} = {hex(addr_int)};\n")
-
-    with open("../files/game_physc.x", "w") as w:
-        w.writelines(output_file)
-
 def parseAddrFile(lines):
     global text, data
     for line in lines:
