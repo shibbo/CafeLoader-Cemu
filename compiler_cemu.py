@@ -229,7 +229,9 @@ class Project:
             print("Linking '%s'" %self.name)
 
         # automatically convert our map that is virtual to physical
-        conv.convGameMapToVirt()
+        # ...if we don't have a virt, make one
+        if os.path.exists("../files/syms/game_virt.x") == False:
+            conv.convGameMapToVirt()
         conv.convGameMapToPhys()
 
         symtable = '../files/syms/game_%s.x' %addrconv.region
