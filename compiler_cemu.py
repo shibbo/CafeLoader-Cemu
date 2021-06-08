@@ -132,6 +132,11 @@ class Module:
         for hook in self.hooks:
             hooktype = hook['type']
             addr = int(hook['addr'], 16)
+
+            offs = conv.getHexOffsInv(addr)
+
+            if offs != 0:
+                addr += offs
             
             if hooktype == 'patch':
                 addr = addrconv.convert(addr, True)
