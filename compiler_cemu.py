@@ -132,12 +132,12 @@ class Module:
         for hook in self.hooks:
             hooktype = hook['type']
             addr = int(hook['addr'], 16)
-
+            
             offs = conv.getHexOffsInv(addr)
 
             if offs != 0:
                 addr += offs
-            
+
             if hooktype == 'patch':
                 addr = addrconv.convert(addr, True)
                 patchList['%08x' %addr] = hook['data']
@@ -234,9 +234,12 @@ class Project:
             print("Linking '%s'" %self.name)
 
         # automatically convert our map that is virtual to physical
-        # ...if we don't have a virt, make one
-        if os.path.exists("../files/syms/game_virt.x") == False:
+        # but if we already have a virtual map in there, use it instead
+        if not os.path.exists("../files/syms/game_virt.x"):
+            print("Creating new virtual symbol table!")
             conv.convGameMapToVirt()
+        else:
+            print("Virtual symbol table already exists, using existing table...")
         conv.convGameMapToPhys()
 
         symtable = '../files/syms/game_%s.x' %addrconv.region
